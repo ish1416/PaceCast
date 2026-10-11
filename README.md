@@ -5,6 +5,7 @@
 > Built for the **Hacktoberfest 2026 Open-Source AI Challenge: Week 1 ("Touch Grass")**.
 
 [![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest-2026_Touch_Grass-ff5722.svg)](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)
+[![Live Web App](https://img.shields.io/badge/Live_App-ish1416.github.io%2FPaceCast-8a2be2.svg)](https://ish1416.github.io/PaceCast/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Model: Gemma 2 2B](https://img.shields.io/badge/Model-Google_Gemma_2_2B-blue.svg)](https://ai.google.dev/gemma)
 [![Setup: Zero Config](https://img.shields.io/badge/Setup-Zero_API_Keys_Required-brightgreen.svg)](#)
@@ -26,9 +27,12 @@ Commercial running apps like Strava, Nike Run Club, and smartwatch dashboards co
 
 ---
 
-## 🎬 Live 3D Walkthrough & Experience Demo
+## 🎬 Live Walkthrough & Experience Demo
 
-![PaceCast Live 3D Demo Walkthrough](docs/assets/pacecast_demo.gif)
+* **🌐 Live Web App**: [https://ish1416.github.io/PaceCast/](https://ish1416.github.io/PaceCast/)
+* **📦 GitHub Repository**: [https://github.com/ish1416/PaceCast](https://github.com/ish1416/PaceCast)
+
+![PaceCast Live Demo Walkthrough](docs/assets/pacecast_demo.gif)
 
 ---
 

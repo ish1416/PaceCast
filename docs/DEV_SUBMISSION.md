@@ -31,12 +31,12 @@ And if you want to preview the run before stepping out, switch to the **3D Autum
 ### 🎥 Interactive Walkthrough & Audio Engine Demo
 ![PaceCast Demo Walkthrough](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_demo.gif)
 
+* **🌐 Live Deployed Web App**: [https://ish1416.github.io/PaceCast/](https://ish1416.github.io/PaceCast/)
+* **📦 GitHub Repository**: [https://github.com/ish1416/PaceCast](https://github.com/ish1416/PaceCast)
+
 - **Adaptive Running Soundtracks & Audio Ducking**: Real-time generative music (Autumn Lo-Fi Beats, Synthwave Horizon Run, Zen Forest Ambient) with automatic volume ducking when Gemma 2 speaks.
 - **Dynamic 2D / 3D Engine Switching**: Seamless toggle between open civic geospatial radar and 60FPS perspective canopy.
-- **OLED Pocket Mode**: Instant black-screen lock mode preventing accidental touches and battery drain.
-
-* **GitHub Repository**: [https://github.com/ish1416/PaceCast](https://github.com/ish1416/PaceCast)
-* **Live App Preview**: Clone and run `python3 -m http.server 3000` or `npx serve` to launch locally in seconds.
+- **High-Tech AMOLED Pocket HUD**: High-contrast OLED battery saver display with live SVG progress ring, cadence telemetry pods, companion equalizer strip, and double-tap unlock.
 
 ### 🌲 3D Autumn Trail Simulator (60FPS Leaves & Live Cadence Waveform)
 ![3D Trail View](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_3d_view.png)
@@ -44,7 +44,7 @@ And if you want to preview the run before stepping out, switch to the **3D Autum
 ### 🍁 2D Foliage Color Radar & Route Engine (OpenStreetMap)
 ![Foliage Radar Map](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_2d_map_glowing.png)
 
-### 🔒 Zero-Screen OLED Pocket Mode (< 1% Screen Time)
+### 🔒 High-Contrast AMOLED Pocket HUD (< 1% Screen Time)
 ![Pocket Mode](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/app_pocket_mode.png)
 
 ### 🍂 Real-World Outdoor Field Test (Airplane Mode on Park Trail)
