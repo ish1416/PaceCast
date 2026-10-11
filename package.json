@@ -1,0 +1,25 @@
+{
+  "name": "pacecast",
+  "version": "1.0.0",
+  "description": "Zero-Screen Audio Run Club Pacer & Autumn Canopy Loop Engine powered by Google Gemma 2 and OpenStreetMap",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y serve . -l 3000",
+    "dev": "npx -y serve . -l 3000"
+  },
+  "keywords": [
+    "hacktoberfest",
+    "open-source-ai",
+    "gemma2",
+    "running",
+    "elevenlabs",
+    "openstreetmap",
+    "touch-grass"
+  ],
+  "author": "Ishita Singh (ish1416)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ish1416/PaceCast.git"
+  }
+}
