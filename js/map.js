@@ -1,4 +1,4 @@
-// PaceCast - Leaflet Map & Geospatial Canopy Renderer
+// PaceCast - Leaflet Map, Geospatial Canopy & Foliage Radar Renderer
 
 class PaceMapRenderer {
   constructor(mapContainerId = "map") {
@@ -7,7 +7,7 @@ class PaceMapRenderer {
     this.routeLayer = null;
     this.splitMarkers = [];
     this.runnerMarker = null;
-    this.canopyHeatLayers = [];
+    this.foliageRadarLayer = null;
     this.currentRoute = null;
   }
 
@@ -26,28 +26,49 @@ class PaceMapRenderer {
       subdomains: "abcd"
     }).addTo(this.map);
 
-    // Add minimal zoom controls on bottom right
+    // Minimal zoom controls on bottom right
     L.control.zoom({ position: "bottomright" }).addTo(this.map);
 
-    // Attribution in bottom left
+    // Attribution
     L.control.attribution({ position: "bottomleft", prefix: false })
       .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> & CartoDB')
       .addTo(this.map);
   }
 
-  renderRoute(routeData) {
+  renderRoute(routeData, showFoliageRadar = true) {
     this.currentRoute = routeData;
     if (!this.map) return;
 
     // Clear previous layers
     if (this.routeLayer) this.map.removeLayer(this.routeLayer);
+    if (this.foliageRadarLayer) this.map.removeLayer(this.foliageRadarLayer);
     this.splitMarkers.forEach(m => this.map.removeLayer(m));
     this.splitMarkers = [];
     if (this.runnerMarker) this.map.removeLayer(this.runnerMarker);
 
     const latLngs = routeData.coordinates.map(pt => [pt[0], pt[1]]);
 
-    // Render outer neon glow line
+    // 1. Autumn Foliage Canopy Heatmap / Radar
+    if (showFoliageRadar) {
+      const radarCircles = [];
+      const foliageColors = ["#ef4444", "#f97316", "#f59e0b", "#fbbf24"];
+
+      routeData.coordinates.forEach((pt, idx) => {
+        const density = pt[3] || 0.85;
+        const color = foliageColors[idx % foliageColors.length];
+        const circle = L.circle([pt[0], pt[1]], {
+          color: color,
+          fillColor: color,
+          fillOpacity: density * 0.35,
+          radius: 90 * density,
+          stroke: false
+        });
+        radarCircles.push(circle);
+      });
+      this.foliageRadarLayer = L.featureGroup(radarCircles).addTo(this.map);
+    }
+
+    // 2. Render outer neon glow route line
     const glowLine = L.polyline(latLngs, {
       color: "#10b981",
       weight: 8,
@@ -56,7 +77,7 @@ class PaceMapRenderer {
       lineJoin: "round"
     }).addTo(this.map);
 
-    // Render core crisp route line
+    // 3. Render core crisp route line
     const coreLine = L.polyline(latLngs, {
       color: "#34d399",
       weight: 4,
@@ -78,7 +99,7 @@ class PaceMapRenderer {
     const startMarker = L.marker(startPt, { icon: startIcon }).addTo(this.map);
     this.splitMarkers.push(startMarker);
 
-    // Add Kilometer split markers
+    // Add Kilometer split markers with interactive popup
     if (routeData.splits && routeData.splits.length > 0) {
       routeData.splits.forEach(split => {
         const splitIcon = L.divIcon({
@@ -89,13 +110,16 @@ class PaceMapRenderer {
         });
 
         const marker = L.marker([split.lat, split.lng], { icon: splitIcon })
-          .bindPopup(`<b>Kilometer ${split.km} Split</b><br>${split.cue}`)
+          .bindPopup(`<div style="font-family: Outfit, sans-serif; color: #111;">
+            <b style="color: #10b981; font-size: 14px;">Kilometer ${split.km} Split</b><br>
+            <p style="margin-top: 4px; font-size: 12px; line-height: 1.4;">${split.cue}</p>
+          </div>`)
           .addTo(this.map);
         this.splitMarkers.push(marker);
       });
     }
 
-    // Add Runner Position Marker
+    // Add Animated Runner Position Marker
     const runnerIcon = L.divIcon({
       className: "runner-pin",
       html: `<div class="runner-dot"><div class="runner-pulse"></div></div>`,
@@ -106,6 +130,17 @@ class PaceMapRenderer {
 
     // Fit view smoothly
     this.map.fitBounds(glowLine.getBounds(), { padding: [40, 40] });
+  }
+
+  toggleFoliageRadar(enabled) {
+    if (!this.map) return;
+    if (this.foliageRadarLayer) {
+      if (enabled) {
+        this.map.addLayer(this.foliageRadarLayer);
+      } else {
+        this.map.removeLayer(this.foliageRadarLayer);
+      }
+    }
   }
 
   updateRunnerPosition(lat, lng) {

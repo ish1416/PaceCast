@@ -19,7 +19,7 @@
       <div class="logo-badge">🏃‍♂️</div>
       <div>
         <h1 class="brand-title">PaceCast</h1>
-        <span class="brand-subtitle">Zero-Screen Audio Running Companion &bull; Powered by Gemma 2</span>
+        <span class="brand-subtitle">Zero-Screen Audio Running Companion &bull; Powered by Google Gemma 2</span>
       </div>
     </div>
 
@@ -29,12 +29,12 @@
         <span class="meter-val" id="val-screen-time">12s</span>
       </div>
       <div class="meter-box">
-        <span class="meter-label">Outdoor Time</span>
+        <span class="meter-label">Outdoor Run Time</span>
         <span class="meter-val" id="val-outdoor-time">0m 00s</span>
       </div>
       <div class="meter-box grass-ratio-box">
-        <span class="meter-label">Touch Grass Ratio</span>
-        <span class="meter-val" id="val-grass-ratio">98.5%</span>
+        <span class="meter-label">Touch Grass Freedom</span>
+        <span class="meter-val" id="val-grass-ratio">99.4%</span>
       </div>
     </div>
   </header>
@@ -42,30 +42,30 @@
   <!-- Main Three-Column Layout -->
   <main class="main-dashboard">
     
-    <!-- LEFT COLUMN: Route Config & Open AI Engine -->
+    <!-- LEFT COLUMN: Route Config & Voice Persona -->
     <aside class="panel-glass column-left">
       <div class="panel-header">
-        <h2 class="panel-title">🗺️ Route & Canopy</h2>
+        <h2 class="panel-title">🗺️ Autumn Canopy Loops</h2>
       </div>
 
       <div class="form-group">
-        <label for="preset-select" class="form-label">Scenic Loop Preset</label>
+        <label for="preset-select" class="form-label">Scenic Running Preset</label>
         <select id="preset-select" class="form-select">
-          <option value="central_park">Central Park Autumn Loop (5K)</option>
+          <option value="central_park">Central Park Autumn Loop (5.0K)</option>
           <option value="burlington_foliage">Burlington Lake & Maple Ridge (5.2K)</option>
           <option value="portland_waterfront">Portland Willamette Oak Loop (4.8K)</option>
           <option value="hyde_park">London Hyde Park Circuit (5.5K)</option>
         </select>
       </div>
 
-      <button id="btn-geolocate" class="btn-secondary">📍 Use My GPS Coordinates</button>
+      <button id="btn-geolocate" class="btn-secondary">📍 Generate Loop From My GPS</button>
 
       <!-- Route Badge Banner -->
       <div class="route-badge-banner">
         <h3 class="route-badge-title" id="route-title">Central Park Autumn Reservoir</h3>
         <p class="route-badge-meta" id="route-city">New York, NY</p>
         <p class="route-badge-meta">Canopy: <strong id="route-canopy">88% Peak Deciduous</strong></p>
-        <span class="route-badge-tag" id="route-status">Peak Crimson & Gold</span>
+        <span class="route-badge-tag" id="route-status">🍁 Peak Crimson & Gold (Oct Week 2)</span>
       </div>
 
       <div class="form-group">
@@ -78,33 +78,26 @@
         <input type="number" id="target-cadence" class="form-input" value="172">
       </div>
 
-      <!-- Open-Source AI Settings -->
-      <div class="panel-header" style="margin-top: 0.5rem;">
-        <h2 class="panel-title">🧠 Open AI Engine</h2>
+      <!-- Gemma 2 Persona Selector -->
+      <div class="panel-header" style="margin-top: 0.25rem;">
+        <h2 class="panel-title">🧠 Gemma 2 Coach Profile</h2>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Core Brain: Google Gemma 2 (2B)</label>
-        <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">
-          Zero-screen prompt tuned for spoken runner guidance, breathing cadence & botanical canopy awareness.
-        </div>
+        <label for="coach-persona" class="form-label">Voice & Coaching Persona</label>
+        <select id="coach-persona" class="form-select">
+          <option value="calm">Calm Athletic Pacer (Built-in)</option>
+          <option value="energy">Tempo Motivator (High Energy)</option>
+          <option value="naturalist">Forest Naturalist (Canopy Lore)</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Audio Metronome & Voice</label>
-        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-          <input type="checkbox" id="toggle-metronome" checked>
-          <span style="font-size: 0.8rem; color: var(--text-main);">Auditory Cadence Click (172 BPM)</span>
-        </div>
+        <label class="form-label">Cadence Metronome</label>
         <div style="display: flex; gap: 0.5rem; align-items: center;">
-          <input type="checkbox" id="toggle-ollama">
-          <span style="font-size: 0.8rem; color: var(--text-main);">Connect Local Ollama (:11434)</span>
+          <input type="checkbox" id="toggle-metronome" checked>
+          <span style="font-size: 0.8rem; color: var(--text-main);">Auditory Stride Click (172 BPM)</span>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="elevenlabs-key" class="form-label">ElevenLabs API Key (Optional)</label>
-        <input type="password" id="elevenlabs-key" class="form-input" placeholder="Optional for Studio Voice">
       </div>
 
       <!-- Action Buttons -->
@@ -112,8 +105,8 @@
         <button id="btn-start-run" class="btn-primary">
           🏃‍♂️ Start Run & Enter Pocket Mode
         </button>
-        <button id="btn-simulate-run" class="btn-secondary">
-          ⚡ Fast 60s Demo (Test Coach Audio)
+        <button id="btn-simulate-run" class="btn-secondary" style="border-color: var(--accent-light); color: var(--accent-light);">
+          ⚡ 3D Experience Demo (Watch & Hear Split Calls)
         </button>
         <button id="btn-stop-run" class="btn-danger hidden">
           ⏹️ End Run & View Summary
@@ -121,22 +114,42 @@
       </div>
     </aside>
 
-    <!-- CENTER COLUMN: Map Viewport & Elevation Profile -->
+    <!-- CENTER COLUMN: Map Viewport / 3D Trail Canvas & Elevation Profile -->
     <section class="column-center">
-      <div class="map-container">
-        <div id="map"></div>
+      
+      <!-- View Mode Tabs -->
+      <div class="view-mode-bar">
+        <div class="view-tabs">
+          <button id="tab-2d-map" class="tab-btn active">🗺️ 2D Interactive Map</button>
+          <button id="tab-3d-trail" class="tab-btn">🌲 3D Autumn Trail Simulator</button>
+        </div>
+        <div class="map-toggles">
+          <label style="font-size: 0.78rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #fbbf24;">
+            <input type="checkbox" id="toggle-foliage-radar" checked>
+            <span>🍁 Foliage Color Radar</span>
+          </label>
+        </div>
       </div>
 
+      <!-- Main Canvas Container -->
+      <div class="map-container">
+        <!-- 2D Leaflet Map -->
+        <div id="map"></div>
+        <!-- 3D Autumn Trail Simulator Canvas -->
+        <canvas id="trail-3d-canvas" class="hidden"></canvas>
+      </div>
+
+      <!-- Elevation Profile & Landmarks -->
       <div class="elevation-card">
         <div class="elevation-header">
-          <span>⛰️ Elevation Profile & Canopy Gradient</span>
-          <span id="btn-export-gpx" style="cursor: pointer; color: var(--accent-light);">📥 Export GPX</span>
+          <span>⛰️ Elevation Profile & Autumn Canopy Gradient</span>
+          <span id="btn-export-gpx" style="cursor: pointer; color: var(--accent-light); font-weight: 600;">📥 Export Route (.GPX)</span>
         </div>
         <canvas id="elevation-canvas"></canvas>
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: Telemetry & Spoken Audio Feed -->
+    <!-- RIGHT COLUMN: Live Telemetry & Spoken Audio Feed -->
     <aside class="panel-glass column-right">
       <div class="panel-header">
         <h2 class="panel-title">📊 Live Run Telemetry</h2>
@@ -148,7 +161,7 @@
           <span class="cell-val" id="val-current-dist">0.0 km</span>
         </div>
         <div class="telemetry-cell">
-          <span class="cell-label">Pace</span>
+          <span class="cell-label">Current Pace</span>
           <span class="cell-val" id="val-current-pace">--:--</span>
         </div>
         <div class="telemetry-cell">
@@ -157,24 +170,37 @@
         </div>
       </div>
 
-      <div class="panel-header" style="margin-top: 0.5rem;">
+      <div class="panel-header" style="margin-top: 0.25rem;">
         <h2 class="panel-title">🎧 Earbud Audio Stream</h2>
+      </div>
+
+      <!-- Live Soundwave Equalizer Animation -->
+      <div class="soundwave-bar" id="soundwave-bar">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <span class="soundwave-label">Audio Coach Ready</span>
       </div>
 
       <div class="transcript-drawer">
         <div class="transcript-list" id="transcript-list">
           <div class="transcript-item">
             <div class="transcript-meta">
-              <span>PaceCast Coach</span>
+              <span>Gemma 2 Audio Coach</span>
               <span>Ready</span>
             </div>
-            <p class="transcript-text">"Press Start Run or Fast Demo to hear Gemma 2 deliver kilometer splits and cadence cues directly into your earbuds."</p>
+            <p class="transcript-text">"Press 'Start Run' to pocket your phone, or '3D Experience Demo' to preview kilometer splits, cadence metronome, and canopy cues."</p>
           </div>
         </div>
       </div>
 
-      <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid var(--border-glow); padding: 0.85rem; border-radius: var(--radius-md); font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">
-        <strong style="color: var(--accent-light);">Anti-Screen Guarantee:</strong> Once your run begins, your screen locks into an ultra-dark pocket view. You run with your ears, not your screen.
+      <div class="anti-screen-banner">
+        <strong>Anti-Screen Guarantee:</strong> Once your run begins, your screen locks into an ultra-dark pocket view. You run with your ears, not your screen.
       </div>
     </aside>
 
@@ -183,7 +209,7 @@
   <!-- POCKET MODE OVERLAY (Activated on Run Start) -->
   <div class="pocket-mode-overlay hidden" id="pocket-mode-overlay">
     <div class="pocket-header">
-      <span class="pocket-badge">🔒 POCKET MODE ACTIVE &bull; EYES UP</span>
+      <span class="pocket-badge">🔒 POCKET MODE ACTIVE &bull; PHONE IN POCKET &bull; EYES UP</span>
     </div>
 
     <div class="pocket-center">
@@ -197,11 +223,15 @@
           <span class="pocket-stat-title">Run Time</span>
           <span class="pocket-stat-val" id="pocket-time">00:00</span>
         </div>
+        <div>
+          <span class="pocket-stat-title">Cadence</span>
+          <span class="pocket-stat-val" style="color: #38bdf8;">172 SPM</span>
+        </div>
       </div>
     </div>
 
     <div class="pocket-footer">
-      <p class="pocket-hint">Double-tap anywhere or click below to unlock screen</p>
+      <p class="pocket-hint">Double-tap anywhere or click below to view route map</p>
       <button id="btn-exit-pocket" class="btn-secondary" style="margin-top: 0.8rem; background: #1e293b;">
         🔓 View Route Map
       </button>
@@ -215,6 +245,7 @@
   <script src="js/gemma_coach.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/trail3d.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

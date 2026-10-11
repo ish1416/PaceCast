@@ -6,11 +6,10 @@ class PaceAudioEngine {
     this.audioCtx = null;
     this.metronomeInterval = null;
     this.isMetronomeActive = false;
-    this.elevenLabsApiKey = "";
-    this.elevenLabsVoiceId = "21m00Tcm4TlvDq8ikWAM"; // Rachel - calm, natural voice
     this.preferredVoice = null;
     this.isSpeaking = false;
     this.volume = 1.0;
+    this.onSpeakingChange = null;
 
     this.initAudioContext();
     this.loadVoices();
@@ -31,9 +30,9 @@ class PaceAudioEngine {
     if (!this.speechSynth) return;
     const setVoice = () => {
       const voices = this.speechSynth.getVoices();
-      // Try to pick an expressive, natural English voice (e.g. Google, Daniel, Samantha, Karen)
+      // Pick natural English voices
       this.preferredVoice = voices.find(v => 
-        (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Daniel") || v.name.includes("Karen")) && v.lang.startsWith("en")
+        (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Daniel") || v.name.includes("Karen") || v.name.includes("Arthur")) && v.lang.startsWith("en")
       ) || voices.find(v => v.lang.startsWith("en")) || voices[0];
     };
 
@@ -43,8 +42,15 @@ class PaceAudioEngine {
     }
   }
 
+  setSpeakingState(speaking) {
+    this.isSpeaking = speaking;
+    if (this.onSpeakingChange) {
+      this.onSpeakingChange(speaking);
+    }
+  }
+
   /**
-   * Speaks a coaching message via ElevenLabs or Web Speech API
+   * Speaks a coaching message with Web Speech API & harmonic chime
    */
   async speak(text, onComplete = null) {
     if (!text) return;
@@ -53,74 +59,35 @@ class PaceAudioEngine {
     // Play milestone chime first
     this.playChime();
 
-    // If user provided ElevenLabs key, try ElevenLabs streaming
-    if (this.elevenLabsApiKey) {
-      try {
-        const success = await this.speakElevenLabs(text, onComplete);
-        if (success) return;
-      } catch (err) {
-        console.warn("ElevenLabs failed, falling back to Web Speech:", err);
-      }
-    }
-
-    // Default: Web Speech API (100% offline, zero-latency)
     if (!this.speechSynth) {
       if (onComplete) onComplete();
       return;
     }
 
-    this.speechSynth.cancel(); // Stop any pending speech
+    this.speechSynth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     if (this.preferredVoice) {
       utterance.voice = this.preferredVoice;
     }
-    utterance.rate = 1.02; // Slightly brisk, athletic pace
+    utterance.rate = 1.02; // Athletic, clear pace
     utterance.pitch = 1.0;
     utterance.volume = this.volume;
 
+    utterance.onstart = () => {
+      this.setSpeakingState(true);
+    };
+
     utterance.onend = () => {
-      this.isSpeaking = false;
+      this.setSpeakingState(false);
       if (onComplete) onComplete();
     };
 
     utterance.onerror = () => {
-      this.isSpeaking = false;
+      this.setSpeakingState(false);
       if (onComplete) onComplete();
     };
 
-    this.isSpeaking = true;
     this.speechSynth.speak(utterance);
-  }
-
-  async speakElevenLabs(text, onComplete) {
-    const url = `https://api.elevenlabs.io/v1/text-to-speech/${this.elevenLabsVoiceId}`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "xi-api-key": this.elevenLabsApiKey
-      },
-      body: JSON.stringify({
-        text: text,
-        model_id: "eleven_monolingual_v1",
-        voice_settings: {
-          stability: 0.7,
-          similarity_boost: 0.8
-        }
-      })
-    });
-
-    if (!response.ok) return false;
-
-    const audioBlob = await response.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const audio = new Audio(audioUrl);
-    audio.onended = () => {
-      URL.revokeObjectURL(audioUrl);
-      if (onComplete) onComplete();
-    };
-    audio.play();
-    return true;
   }
 
   /**
@@ -137,7 +104,7 @@ class PaceAudioEngine {
     const gain = this.audioCtx.createGain();
 
     osc.type = "sine";
-    // Play dual harmonic chime: E5 (659Hz) -> G#5 (830Hz)
+    // Dual harmonic chime: E5 (659Hz) -> G#5 (830Hz)
     osc.frequency.setValueAtTime(659.25, now);
     osc.frequency.exponentialRampToValueAtTime(830.61, now + 0.15);
 
@@ -153,9 +120,9 @@ class PaceAudioEngine {
   }
 
   /**
-   * Cadence Metronome (Tick at e.g. 170 BPM)
+   * Cadence Metronome (Tick at e.g. 172 BPM)
    */
-  startMetronome(bpm = 170) {
+  startMetronome(bpm = 172) {
     this.stopMetronome();
     this.isMetronomeActive = true;
     const intervalMs = (60 / bpm) * 1000;
