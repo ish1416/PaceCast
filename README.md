@@ -28,19 +28,23 @@ Commercial running apps like Strava, Nike Run Club, and smartwatch dashboards co
 
 ## 🎬 Live 3D Walkthrough & Experience Demo
 
-![PaceCast Live 3D Demo Walkthrough](docs/assets/pacecast_demo.webp)
+![PaceCast Live 3D Demo Walkthrough](docs/assets/pacecast_demo.gif)
 
 ---
 
 ## 📸 Screenshots & Dual Experience Modes
 
-| 🌲 3D Autumn Trail Simulator (60FPS Leaves & Waveform) | 🍁 2D Foliage Color Radar & Route Engine |
-| :---: | :---: |
-| ![3D Trail View](docs/assets/pacecast_3d_view.png) | ![Foliage Radar Map](docs/assets/pacecast_2d_map_glowing.png) |
+### 🌲 3D Autumn Trail Simulator (60FPS Leaves & Live Cadence Waveform)
+![3D Trail View](docs/assets/pacecast_3d_view.png)
 
-| 🔒 Zero-Screen OLED Pocket Mode | 🍂 Real-World Outdoor Field Test (Airplane Mode) |
-| :---: | :---: |
-| ![Pocket Mode](docs/assets/app_pocket_mode.png) | ![Outdoor Field Test](docs/assets/field_test.jpg) |
+### 🍁 2D Foliage Color Radar & Route Engine (OpenStreetMap)
+![Foliage Radar Map](docs/assets/pacecast_2d_map_glowing.png)
+
+### 🔒 Zero-Screen OLED Pocket Mode (< 1% Screen Time)
+![Pocket Mode](docs/assets/app_pocket_mode.png)
+
+### 🍂 Real-World Outdoor Field Test (Airplane Mode on Park Trail)
+![Outdoor Field Test](docs/assets/field_test.jpg)
 
 ---
 
@@ -100,7 +104,7 @@ flowchart TD
   * Milestones: Spoken splits delivered at each kilometer.
   * Form & Cadence: Proactive prompts when stride rate deviates from 170 SPM.
   * Environmental Awareness: Highlights surrounding trees, elevation changes, and seasonal canopy changes.
-* **🎵 Auditory Cadence Metronome**: Subtle, non-intrusive rhythmic click generated via the Web Audio API to help runners lock in optimal 165–180 SPM turnover.
+* **🎵 Adaptive Running Soundtracks & Audio Ducking**: Procedural Web Audio music engine featuring 3 tempo-matched generative soundtracks (**Autumn Lo-Fi Chill Beats**, **Synthwave Horizon Run**, and **Zen Forest Trail Ambient**) with automatic **Audio Ducking** that smoothly dips music volume whenever Gemma 2 speaks. Also includes minimal stride metronome and mute options.
 * **📥 GPX Export**: Download your completed loop to import directly into your Garmin, Apple Watch, or Strava.
 
 ---

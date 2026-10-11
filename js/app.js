@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const elBtnSimulate = document.getElementById("btn-simulate-run");
   const elBtnStopRun = document.getElementById("btn-stop-run");
   const elBtnGeolocate = document.getElementById("btn-geolocate");
-  const elToggleMetronome = document.getElementById("toggle-metronome");
+  const elMusicTrackSelect = document.getElementById("music-track-select");
+  const elMusicVolume = document.getElementById("music-volume");
+  const elMusicVolVal = document.getElementById("music-vol-val");
+  const elPocketMusicTitle = document.getElementById("pocket-music-title");
   const elToggleFoliageRadar = document.getElementById("toggle-foliage-radar");
 
   // View Mode Tabs
@@ -57,6 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const elPocketDist = document.getElementById("pocket-dist");
   const elPocketPace = document.getElementById("pocket-pace");
   const elPocketTime = document.getElementById("pocket-time");
+  const elPocketCadence = document.getElementById("pocket-cadence");
+  const elPocketTargetTotal = document.getElementById("pocket-target-total");
+  const elPocketProgressCircle = document.getElementById("pocket-progress-circle");
+  const elPocketFreedomChip = document.getElementById("pocket-freedom-chip");
+  const elPocketCoachStatus = document.getElementById("pocket-coach-status");
   const elBtnExitPocket = document.getElementById("btn-exit-pocket");
   const elElevationChart = document.getElementById("elevation-canvas");
   const elBtnExportGpx = document.getElementById("btn-export-gpx");
@@ -89,6 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (window.trail3d) {
       window.trail3d.setSpeaking(isSpeaking);
+    }
+    if (elPocketCoachStatus) {
+      elPocketCoachStatus.textContent = isSpeaking ? "Gemma 2 Coaching..." : "Gemma 2 Listening";
     }
   };
 
@@ -164,14 +175,37 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  // Metronome toggle
-  if (elToggleMetronome) {
-    elToggleMetronome.addEventListener("change", (e) => {
-      if (e.target.checked && state.isRunning) {
-        window.paceAudio.startMetronome(parseInt(elTargetCadence.value, 10));
-      } else {
-        window.paceAudio.stopMetronome();
+  // Running Soundtrack & Volume Controls
+  const trackLabels = {
+    lofi: "Autumn Lo-Fi Chill Beats",
+    synthwave: "Synthwave Horizon Run",
+    ambient: "Zen Forest Trail Ambient",
+    click: "Minimal Stride Metronome",
+    mute: "Muted (Voice Only)"
+  };
+
+  function updatePocketMusicTitle() {
+    if (elPocketMusicTitle && elMusicTrackSelect) {
+      elPocketMusicTitle.textContent = trackLabels[elMusicTrackSelect.value] || "Autumn Lo-Fi Beats";
+    }
+  }
+
+  if (elMusicTrackSelect) {
+    elMusicTrackSelect.addEventListener("change", (e) => {
+      const track = e.target.value;
+      window.paceAudio.setMusicTrack(track);
+      if (state.isRunning) {
+        window.paceAudio.startMusic(track, state.targetCadence);
       }
+      updatePocketMusicTitle();
+    });
+  }
+
+  if (elMusicVolume) {
+    elMusicVolume.addEventListener("input", (e) => {
+      const vol = parseInt(e.target.value, 10);
+      if (elMusicVolVal) elMusicVolVal.textContent = `${vol}%`;
+      window.paceAudio.setMusicVolume(vol / 100);
     });
   }
 
@@ -215,9 +249,9 @@ document.addEventListener("DOMContentLoaded", () => {
       enterPocketMode();
     }
 
-    if (elToggleMetronome.checked) {
-      window.paceAudio.startMetronome(state.targetCadence);
-    }
+    const track = elMusicTrackSelect ? elMusicTrackSelect.value : "lofi";
+    window.paceAudio.startMusic(track, state.targetCadence);
+    updatePocketMusicTitle();
 
     // Initial audio departure cue
     const departureAudio = `PaceCast active. Pacing locked for ${state.currentRoute.distanceKm} kilometers at ${state.targetPace} pace. Phone in pocket, eyes on the trail. Let's run.`;
@@ -243,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     state.isSimulating = false;
     clearInterval(state.runTimer);
     clearInterval(state.simulationTimer);
-    window.paceAudio.stopMetronome();
+    window.paceAudio.stopMusic();
 
     elBtnStartRun.classList.remove("hidden");
     elBtnSimulate.classList.remove("hidden");
@@ -330,6 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 9. Pocket Mode Management
   function enterPocketMode() {
     state.isPocketMode = true;
+    updatePocketStats();
     elPocketOverlay.classList.remove("hidden");
   }
 
@@ -366,12 +401,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updatePocketStats() {
-    if (elPocketDist) elPocketDist.textContent = `${state.currentKmProgress.toFixed(1)} KM`;
-    if (elPocketPace) elPocketPace.textContent = `${state.targetPace} /KM`;
+    if (elPocketDist) elPocketDist.textContent = state.currentKmProgress.toFixed(1);
+    if (elPocketPace) elPocketPace.textContent = state.targetPace;
+    if (elPocketCadence) elPocketCadence.textContent = state.targetCadence;
+    if (elPocketTargetTotal && state.currentRoute) {
+      elPocketTargetTotal.textContent = state.currentRoute.distanceKm;
+    }
     
     const outMins = Math.floor(state.outdoorTimeSec / 60).toString().padStart(2, "0");
     const outSecs = (state.outdoorTimeSec % 60).toString().padStart(2, "0");
     if (elPocketTime) elPocketTime.textContent = `${outMins}:${outSecs}`;
+
+    // SVG Circular Progress Ring
+    if (elPocketProgressCircle && state.currentRoute) {
+      const circumference = 2 * Math.PI * 118; // ~741.4px
+      const totalKm = state.currentRoute.distanceKm || 5.0;
+      const progressRatio = Math.min(1.0, state.currentKmProgress / totalKm);
+      const offset = circumference * (1 - progressRatio);
+      elPocketProgressCircle.style.strokeDasharray = circumference;
+      elPocketProgressCircle.style.strokeDashoffset = offset;
+    }
+
+    // Live Touch Grass Freedom badge
+    if (elPocketFreedomChip) {
+      const total = state.screenTimeSec + state.outdoorTimeSec;
+      const ratio = total > 0 ? ((state.outdoorTimeSec / total) * 100).toFixed(1) : "99.4";
+      elPocketFreedomChip.textContent = `🌿 ${ratio}% Screen-Free`;
+    }
   }
 
   function addTranscript(speaker, message) {

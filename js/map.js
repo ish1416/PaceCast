@@ -20,10 +20,10 @@ class PaceMapRenderer {
       attributionControl: false
     }).setView(center, zoom);
 
-    // Custom dark aesthetic tile layer (CartoDB DarkMatter)
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 19,
-      subdomains: "abcd"
+    // Dark aesthetic tile layer with NO API KEY & NO WATERMARK
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 16,
+      attribution: '&copy; Esri, HERE, Garmin, OpenStreetMap'
     }).addTo(this.map);
 
     // Minimal zoom controls on bottom right
@@ -31,7 +31,7 @@ class PaceMapRenderer {
 
     // Attribution
     L.control.attribution({ position: "bottomleft", prefix: false })
-      .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> & CartoDB')
+      .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, Esri')
       .addTo(this.map);
   }
 

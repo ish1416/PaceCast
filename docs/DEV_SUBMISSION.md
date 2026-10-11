@@ -6,10 +6,6 @@ tags: ["devchallenge", "hf26challenge", "gemma", "opensource"]
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
 
----
-
-![PaceCast Autumn Runner](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/hero_runner.jpg)
-
 ## What I Built
 
 Every fitness app built in the last decade wants one thing: **your visual attention**. 
@@ -32,22 +28,27 @@ And if you want to preview the run before stepping out, switch to the **3D Autum
 
 ## Demo
 
-Here is a full walkthrough of PaceCast generating an autumn running loop, switching to the 3D Trail Simulator, activating OLED Pocket Mode, and simulating spoken Gemma 2 coaching splits:
+### 🎥 Interactive Walkthrough & Audio Engine Demo
+![PaceCast Demo Walkthrough](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_demo.gif)
 
-![PaceCast Demo Walkthrough](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_demo.webp)
+- **Adaptive Running Soundtracks & Audio Ducking**: Real-time generative music (Autumn Lo-Fi Beats, Synthwave Horizon Run, Zen Forest Ambient) with automatic volume ducking when Gemma 2 speaks.
+- **Dynamic 2D / 3D Engine Switching**: Seamless toggle between open civic geospatial radar and 60FPS perspective canopy.
+- **OLED Pocket Mode**: Instant black-screen lock mode preventing accidental touches and battery drain.
 
 * **GitHub Repository**: [https://github.com/ish1416/PaceCast](https://github.com/ish1416/PaceCast)
 * **Live App Preview**: Clone and run `python3 -m http.server 3000` or `npx serve` to launch locally in seconds.
 
-### The Dual Experience Modes:
+### 🌲 3D Autumn Trail Simulator (60FPS Leaves & Live Cadence Waveform)
+![3D Trail View](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_3d_view.png)
 
-| 🌲 3D Autumn Trail Simulator (60FPS Leaves & Waveform) | 🍁 2D Foliage Color Radar & Route Engine |
-| :---: | :---: |
-| ![3D Trail View](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_3d_view.png) | ![Foliage Radar Map](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_2d_map_glowing.png) |
+### 🍁 2D Foliage Color Radar & Route Engine (OpenStreetMap)
+![Foliage Radar Map](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/pacecast_2d_map_glowing.png)
 
-| 🔒 Zero-Screen OLED Pocket Mode | 🍂 Real-World Outdoor Field Test (Airplane Mode) |
-| :---: | :---: |
-| ![Pocket Mode](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/app_pocket_mode.png) | ![Outdoor Field Test](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/field_test.jpg) |
+### 🔒 Zero-Screen OLED Pocket Mode (< 1% Screen Time)
+![Pocket Mode](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/app_pocket_mode.png)
+
+### 🍂 Real-World Outdoor Field Test (Airplane Mode on Park Trail)
+![Outdoor Field Test](https://raw.githubusercontent.com/ish1416/PaceCast/main/docs/assets/field_test.jpg)
 
 ---
 
@@ -125,9 +126,13 @@ When you cross a kilometer checkpoint, Gemma 2 evaluates your split time against
 ### 2. Autumn Canopy Routing with OpenStreetMap
 Commercial route builders optimize for shortest distance or street vehicle networks. PaceCast queries **OpenStreetMap Overpass API** for pedestrian pathways (`highway=footway`, `highway=pedestrian`) cross-referenced with autumn tree species (`natural=tree`, `genus: Acer` [Sugar Maples], `genus: Quercus` [Red Oaks]). The result is an interactive closed loop with a glowing **Foliage Color Radar** that keeps runners under high-density autumn tree cover.
 
-### 3. Auditory Cadence Metronome & Soundwave Visualizer
-* **Auditory Cadence Metronome**: Most runners overstride at 150 SPM, causing shin splints. PaceCast features a built-in Web Audio API metronome that gently clicks at your target cadence (165–180 BPM) between coaching briefs.
-* **Built-in Speech & Equalizer**: 100% runs natively in the browser with zero API keys required, featuring an animated audio equalizer that pulses whenever Gemma 2 speaks.
+### 3. Adaptive Running Soundtracks, Audio Ducking & Soundwave Visualizer
+* **Adaptive Generative Soundtracks**: Instead of annoying robotic clicks or harsh footstep noises, PaceCast features a built-in procedural Web Audio music engine with 3 tempo-matched soundtracks:
+  - 🍁 **Autumn Lo-Fi Chill Beats**: Warm Rhodes electric piano chords, sub-bass, and relaxed head-bobbing groove tempo-synced to your stride turnover.
+  - ⚡ **Synthwave Horizon Run**: Driving 80s arpeggiated basslines and retro synth pads for tempo workouts and runner's high.
+  - 🌲 **Zen Forest Trail Ambient**: Meditative pads, wind canopy rustle, and crystalline harmonic chimes for mindful runs.
+* **Smart Audio Ducking**: The music smoothly dips to 18% volume whenever the Gemma 2 coach speaks a kilometer split or foliage observation, then smoothly swells back up when finished.
+* **Built-in Speech & Equalizer**: 100% runs natively in the browser with zero API keys required, featuring an animated audio equalizer that pulses in both 2D and 3D views.
 
 ---
 

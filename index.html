@@ -9,7 +9,7 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -92,12 +92,28 @@
         </select>
       </div>
 
+      <!-- Running Soundtrack & Audio Vibe Selector -->
+      <div class="panel-header" style="margin-top: 0.35rem;">
+        <h2 class="panel-title">🎵 Running Soundtrack & Pacer</h2>
+      </div>
+
       <div class="form-group">
-        <label class="form-label">Cadence Metronome</label>
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
-          <input type="checkbox" id="toggle-metronome" checked>
-          <span style="font-size: 0.8rem; color: var(--text-main);">Auditory Stride Click (172 BPM)</span>
+        <label for="music-track-select" class="form-label">Soundtrack & Audio Vibe</label>
+        <select id="music-track-select" class="form-select">
+          <option value="lofi" selected>🍁 Autumn Lo-Fi Chill Beats (Tempo-Matched)</option>
+          <option value="synthwave">⚡ Synthwave Horizon Run (High Energy)</option>
+          <option value="ambient">🌲 Zen Forest Trail Ambient (Mindful)</option>
+          <option value="click">⏱️ Minimal Stride Metronome (Click Only)</option>
+          <option value="mute">🔇 Mute Music (Coach Voice Only)</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-top: -0.2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+          <label for="music-volume" class="form-label" style="margin-bottom: 0;">Music Volume</label>
+          <span id="music-vol-val" style="font-size: 0.75rem; color: #38bdf8; font-weight: 600;">75%</span>
         </div>
+        <input type="range" id="music-volume" min="0" max="100" value="75" style="width: 100%; cursor: pointer;">
       </div>
 
       <!-- Action Buttons -->
@@ -206,34 +222,86 @@
 
   </main>
 
-  <!-- POCKET MODE OVERLAY (Activated on Run Start) -->
+  <!-- POCKET MODE OVERLAY (Activated on Run Start - High-End Athletic AMOLED HUD) -->
   <div class="pocket-mode-overlay hidden" id="pocket-mode-overlay">
-    <div class="pocket-header">
-      <span class="pocket-badge">🔒 POCKET MODE ACTIVE &bull; PHONE IN POCKET &bull; EYES UP</span>
+    <!-- Top Security / Anti-Screen Header -->
+    <div class="pocket-top-bar">
+      <div class="pocket-badge-glow">
+        <span class="pulsing-emerald-dot"></span>
+        <span>POCKET LOCK ACTIVE &bull; EYES ON TRAIL</span>
+      </div>
+      <div class="pocket-freedom-chip" id="pocket-freedom-chip">
+        🌿 99.4% Screen-Free
+      </div>
     </div>
 
-    <div class="pocket-center">
-      <div class="pocket-distance" id="pocket-dist">0.0 KM</div>
-      <div class="pocket-stat-row">
-        <div>
-          <span class="pocket-stat-title">Target Pace</span>
-          <span class="pocket-stat-val" id="pocket-pace">5:15 /KM</span>
+    <!-- Center Hero Gauge: Circular Neon Progress Ring & Metrics -->
+    <div class="pocket-hero-gauge">
+      <svg class="pocket-progress-svg" viewBox="0 0 280 280">
+        <defs>
+          <linearGradient id="pocketRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#10b981" />
+            <stop offset="60%" stop-color="#f59e0b" />
+            <stop offset="100%" stop-color="#f97316" />
+          </linearGradient>
+        </defs>
+        <circle class="pocket-track-circle" cx="140" cy="140" r="118" />
+        <circle class="pocket-fill-circle" id="pocket-progress-circle" cx="140" cy="140" r="118" />
+      </svg>
+
+      <div class="pocket-gauge-inner">
+        <span class="pocket-metric-label">DISTANCE</span>
+        <div class="pocket-distance-display">
+          <span class="pocket-dist-num" id="pocket-dist">0.0</span>
+          <span class="pocket-dist-unit">KM</span>
         </div>
-        <div>
-          <span class="pocket-stat-title">Run Time</span>
-          <span class="pocket-stat-val" id="pocket-time">00:00</span>
-        </div>
-        <div>
-          <span class="pocket-stat-title">Cadence</span>
-          <span class="pocket-stat-val" style="color: #38bdf8;">172 SPM</span>
+        <div class="pocket-target-pill">
+          Target <span id="pocket-target-total">5.0</span> KM
         </div>
       </div>
     </div>
 
-    <div class="pocket-footer">
-      <p class="pocket-hint">Double-tap anywhere or click below to view route map</p>
-      <button id="btn-exit-pocket" class="btn-secondary" style="margin-top: 0.8rem; background: #1e293b;">
-        🔓 View Route Map
+    <!-- Live Telemetry Glass Grid (3 Pods) -->
+    <div class="pocket-telemetry-grid">
+      <div class="pocket-telemetry-card">
+        <span class="pocket-card-label">⏱️ Target Pace</span>
+        <span class="pocket-card-val" id="pocket-pace">5:15</span>
+        <span class="pocket-card-sub">/KM &bull; locked</span>
+      </div>
+      <div class="pocket-telemetry-card highlight-card">
+        <span class="pocket-card-label">⏳ Active Run</span>
+        <span class="pocket-card-val" id="pocket-time">00:00</span>
+        <span class="pocket-card-sub">outdoor air</span>
+      </div>
+      <div class="pocket-telemetry-card">
+        <span class="pocket-card-label">👟 Cadence</span>
+        <span class="pocket-card-val" id="pocket-cadence">172</span>
+        <span class="pocket-card-sub">SPM &bull; rhythm</span>
+      </div>
+    </div>
+
+    <!-- Audio Companion & Gemma Coach Status Strip -->
+    <div class="pocket-audio-strip">
+      <div class="pocket-soundtrack-info">
+        <div class="pocket-soundwave-anim">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <span class="pocket-track-lead">Vibe:</span>
+          <span class="pocket-track-name" id="pocket-music-title">Autumn Lo-Fi Chill Beats</span>
+        </div>
+      </div>
+      <div class="pocket-coach-status">
+        <span class="coach-pulse-icon">🎙️</span>
+        <span class="coach-pulse-text" id="pocket-coach-status">Gemma 2 Listening</span>
+      </div>
+    </div>
+
+    <!-- Bottom Actions / Unlock -->
+    <div class="pocket-bottom-bar">
+      <p class="pocket-hint-text">Double-tap anywhere or press below to glance at the route</p>
+      <button id="btn-exit-pocket" class="btn-pocket-unlock">
+        <span>🔓 View Route Map & Foliage Radar</span>
       </button>
     </div>
   </div>
@@ -241,11 +309,11 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- Application Scripts -->
-  <script src="js/routes_data.js"></script>
-  <script src="js/gemma_coach.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/trail3d.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/routes_data.js?v=4"></script>
+  <script src="js/gemma_coach.js?v=4"></script>
+  <script src="js/audio.js?v=4"></script>
+  <script src="js/map.js?v=4"></script>
+  <script src="js/trail3d.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
 </body>
 </html>
